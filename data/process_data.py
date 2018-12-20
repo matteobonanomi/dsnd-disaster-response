@@ -10,9 +10,20 @@ def load_data(messages_filepath, categories_filepath):
     df = pd.merge(messages,categories,on='id')
     return df 
 
-
 def clean_data(df):
-    pass
+    categories = df.categories.str.split(pat=';',expand=True)
+    firstrow = categories.iloc[0,:]
+    category_colnames = firstrow.apply(lambda x:x[:-2])
+    categories.columns = category_colnames
+    for column in categories:
+        categories[column] = categories[column].str[-1]
+        categories[column] = categories[column].astype(np.int)
+    df = df.drop('categories',axis=1)
+    df = pd.concat([df,categories],axis=1)
+    df = pd.concat([df,pd.get_dummies(df.genre)],axis=1)
+    df = df.drop(['genre','social'],axis=1) 
+    df = df.drop_duplicates()
+    return df
 
 
 def save_data(df, database_filename):
