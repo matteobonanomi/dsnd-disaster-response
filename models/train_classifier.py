@@ -22,8 +22,8 @@ nltk.download(['punkt', 'wordnet', 'averaged_perceptron_tagger'])
 def load_data(database_filepath):
     engine = create_engine('sqlite:///'+database_filepath)
     df = pd.read_sql_table('df',engine)
-    X = df[['message','direct','news']]
-    Y = df.iloc[:,range(-4,-40,-1)]
+    X = df['message']
+    Y = df.iloc[:,4:]
     category_names = Y.columns
     return X, Y, category_names
 
@@ -44,39 +44,13 @@ def tokenize(text):
 
     return clean_tokens
 
-class ColumnSelector(BaseEstimator, TransformerMixin):
-    def __init__(self, columns):
-        self.columns = columns
-
-    def fit(self, X, y=None):
-        return self
-
-    def transform(self, X):
-        assert isinstance(X, pd.DataFrame)
-
-        try:
-            return X[self.columns]
-        except KeyError:
-            cols_error = list(set(self.columns) - set(X.columns))
-            raise KeyError("The DataFrame does not include the columns: %s" % cols_error)
-
 def build_model():
     model = Pipeline([
-        ('features', FeatureUnion([
-
-            ('text_pipeline', Pipeline([
-                ('colsel', ColumnSelector('message')),
-                ('vect', CountVectorizer(tokenizer=tokenize)),
-                ('tfidf', TfidfTransformer())
-            ])),
-
-            ('categ_pipeline', Pipeline([
-                ('colsel', ColumnSelector(['direct','news']))
-            ])),
-        ])),
-
-        ('clf', RandomForestClassifier())
+        ('vect', CountVectorizer(tokenizer=tokenize)),
+        ('tfidf', TfidfTransformer()),
+        ('clf', RandomForestClassifier()),
     ])
+
     return model
 
 
