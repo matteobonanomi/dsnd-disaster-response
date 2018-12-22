@@ -2,12 +2,12 @@ import sys
 
 
 def load_data(database_filepath):
-	engine = create_engine('sqlite:///'+database_filepath)
-	df = pd.read_sql_table('df',engine)
-	X = df[['message','direct','news']]
-	Y = df.iloc[:,range(-3,-39,-1)]
-	category_names = Y.columns
-	return X, Y, category_names
+    engine = create_engine('sqlite:///'+database_filepath)
+    df = pd.read_sql_table('df',engine)
+    X = df[['message','direct','news']]
+    Y = df.iloc[:,range(-3,-39,-1)]
+    category_names = Y.columns
+    return X, Y, category_names
 
 
 def tokenize(text):
@@ -63,19 +63,19 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
-	Y_pred = model.predict(X_test)
-	overall_accuracy = (y_pred == y_test).mean().mean()
-	print('Average overall accuracy {} \n --------------------- \n'.format(overall_accuracy))
-	y_pred = pd.DataFrame(y_pred, columns = y_test.columns)
-	for column in y_test.columns:
-    	print('FEATURE: {}\n'.format(column))
-    	print(classification_report(y_test[column],y_pred[column]))
+    Y_pred = model.pre#dict(X_test)
+    overall_accuracy = (y_pred == y_test).mean().mean()
+    print('Average overall accuracy {} \n --------------------- \n'.format(overall_accuracy))
+    Y_pred = pd.DataFrame(Y_pred, columns = Y_test.columns)
+    for column in y_test.columns:
+        print('Model Performance with Category: {}'.format(column))
+        print(classification_report(Y_test[column],Y_pred[column]))
     pass
 
 
 def save_model(model, model_filepath):
-	filename = model_filepath
-	pickle.dump(model, open(filename, 'wb'))
+    filename = model_filepath
+    pickle.dump(model, open(filename, 'wb'))
     pass
 
 
