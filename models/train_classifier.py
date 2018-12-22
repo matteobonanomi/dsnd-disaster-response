@@ -1,4 +1,22 @@
 import sys
+import pandas as pd
+#import numpy as np
+#import os
+import pickle
+from sqlalchemy import create_engine
+import re
+import nltk
+from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.model_selection import train_test_split
+#from sklearn.multioutput import MultiOutputClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
+from sklearn.pipeline import Pipeline, FeatureUnion
+#from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import make_scorer, accuracy_score, classification_report
+nltk.download(['punkt', 'wordnet', 'averaged_perceptron_tagger'])
 
 
 def load_data(database_filepath):
