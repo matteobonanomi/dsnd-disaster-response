@@ -21,7 +21,7 @@ def clean_data(df):
     df = df.drop('categories',axis=1)
     df = pd.concat([df,categories],axis=1)
     df = pd.concat([df,pd.get_dummies(df.genre)],axis=1)
-    df = df.drop(['genre','social'],axis=1) 
+    #df = df.drop(['genre','social'],axis=1) 
     df = df.drop_duplicates()
     return df
 
