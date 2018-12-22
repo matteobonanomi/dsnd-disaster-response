@@ -81,11 +81,11 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
-    Y_pred = model.pre#dict(X_test)
-    overall_accuracy = (y_pred == y_test).mean().mean()
+    Y_pred = model.predict(X_test)
+    overall_accuracy = (Y_pred == Y_test).mean().mean()
     print('Average overall accuracy {} \n --------------------- \n'.format(overall_accuracy))
     Y_pred = pd.DataFrame(Y_pred, columns = Y_test.columns)
-    for column in y_test.columns:
+    for column in Y_test.columns:
         print('Model Performance with Category: {}'.format(column))
         print(classification_report(Y_test[column],Y_pred[column]))
     pass
