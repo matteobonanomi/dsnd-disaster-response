@@ -4,6 +4,7 @@ import pandas as pd
 
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
+from sklearn.base import BaseEstimator, TransformerMixin
 
 from flask import Flask
 from flask import render_template, request, jsonify
@@ -13,6 +14,23 @@ from sqlalchemy import create_engine
 
 
 app = Flask(__name__)
+
+class ColumnSelector(BaseEstimator, TransformerMixin):
+    def __init__(self, columns):
+        self.columns = columns
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X):
+        assert isinstance(X, pd.DataFrame)
+
+        try:
+            return X[self.columns]
+        except KeyError:
+            cols_error = list(set(self.columns) - set(X.columns))
+            raise KeyError("The DataFrame does not include the columns: %s" % cols_error)
+
 
 def tokenize(text):
     tokens = word_tokenize(text)
@@ -26,11 +44,11 @@ def tokenize(text):
     return clean_tokens
 
 # load data
-engine = create_engine('sqlite:///../data/YourDatabaseName.db')
-df = pd.read_sql_table('YourTableName', engine)
+engine = create_engine('sqlite:///../data/DisasterResponse.db')
+df = pd.read_sql_table('df', engine)
 
 # load model
-model = joblib.load("../models/your_model_name.pkl")
+model = joblib.load("../models/classifier.pkl")
 
 
 # index webpage displays cool visuals and receives user input text for model
