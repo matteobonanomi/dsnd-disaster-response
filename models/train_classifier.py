@@ -2,22 +2,80 @@ import sys
 
 
 def load_data(database_filepath):
-    pass
+	engine = create_engine('sqlite:///'+database_filepath)
+	df = pd.read_sql_table('df',engine)
+	X = df[['message','direct','news']]
+	Y = df.iloc[:,range(-3,-39,-1)]
+	category_names = Y.columns
+	return X, Y, category_names
 
 
 def tokenize(text):
-    pass
+    url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
+    detected_urls = re.findall(url_regex, text)
+    for url in detected_urls:
+        text = text.replace(url, "urlplaceholder")
 
+    tokens = word_tokenize(text)
+    lemmatizer = WordNetLemmatizer()
+
+    clean_tokens = []
+    for tok in tokens:
+        clean_tok = lemmatizer.lemmatize(tok).lower().strip()
+        clean_tokens.append(clean_tok)
+
+    return clean_tokens
+
+class ColumnSelector(BaseEstimator, TransformerMixin):
+    def __init__(self, columns):
+        self.columns = columns
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X):
+        assert isinstance(X, pd.DataFrame)
+
+        try:
+            return X[self.columns]
+        except KeyError:
+            cols_error = list(set(self.columns) - set(X.columns))
+            raise KeyError("The DataFrame does not include the columns: %s" % cols_error)
 
 def build_model():
-    pass
+    model = Pipeline([
+        ('features', FeatureUnion([
+
+            ('text_pipeline', Pipeline([
+                ('colsel', ColumnSelector('message')),
+                ('vect', CountVectorizer(tokenizer=tokenize)),
+                ('tfidf', TfidfTransformer())
+            ])),
+
+            ('categ_pipeline', Pipeline([
+                ('colsel', ColumnSelector(['direct','news']))
+            ])),
+        ])),
+
+        ('clf', RandomForestClassifier())
+    ])
+    return model
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
+	Y_pred = model.predict(X_test)
+	overall_accuracy = (y_pred == y_test).mean().mean()
+	print('Average overall accuracy {} \n --------------------- \n'.format(overall_accuracy))
+	y_pred = pd.DataFrame(y_pred, columns = y_test.columns)
+	for column in y_test.columns:
+    	print('FEATURE: {}\n'.format(column))
+    	print(classification_report(y_test[column],y_pred[column]))
     pass
 
 
 def save_model(model, model_filepath):
+	filename = model_filepath
+	pickle.dump(model, open(filename, 'wb'))
     pass
 
 
