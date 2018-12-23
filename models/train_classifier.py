@@ -1,4 +1,5 @@
 # import libraries
+import sys
 import pandas as pd
 import numpy as np
 import os
@@ -98,12 +99,22 @@ def multioutput_fscore(y_true,y_pred,beta=1):
 
 def evaluate_model(model, X_test, Y_test, category_names):
     Y_pred = model.predict(X_test)
+    
+    multi_f1 = multioutput_fscore(Y_test,Y_pred, beta = 1)
     overall_accuracy = (Y_pred == Y_test).mean().mean()
-    print('Average overall accuracy {} \n --------------------- \n'.format(overall_accuracy))
-    Y_pred = pd.DataFrame(Y_pred, columns = Y_test.columns)
-    for column in Y_test.columns:
-        print('Model Performance with Category: {}'.format(column))
-        print(classification_report(Y_test[column],Y_pred[column]))
+
+    print('Average overall accuracy {0:.2f}% \n'.format(overall_accuracy*100))
+    print('F1 score (custom definition) {0:.2f}%\n'.format(multi_f1*100))
+
+    # Print the whole classification report.
+    # Extremely long output
+    # Work In Progress: Save Output as Text file!
+    
+    #Y_pred = pd.DataFrame(Y_pred, columns = Y_test.columns)
+    
+    #for column in Y_test.columns:
+    #    print('Model Performance with Category: {}'.format(column))
+    #    print(classification_report(Y_test[column],Y_pred[column]))
     pass
 
 
