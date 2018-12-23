@@ -1,3 +1,16 @@
+"""
+TRAIN CLASSIFIER
+Disaster Resoponse Project
+Udacity - Data Science Nanodegree
+
+How to run this script (Example)
+> python train_classifier.py ../data/DisasterResponse.db classifier.pkl
+
+Arguments:
+    1) SQLite db path (containing pre-processed data)
+    2) pickle file name to save ML model
+"""
+
 # import libraries
 import sys
 import pandas as pd
@@ -21,6 +34,16 @@ nltk.download(['punkt', 'wordnet', 'averaged_perceptron_tagger'])
 
 
 def load_data(database_filepath):
+    """
+    Load Data Function
+    
+    Arguments:
+        database_filepath -> path to SQLite db
+    Output:
+        X -> feature DataFrame
+        Y -> label DataFrame
+        category_names -> used for data visualization (app)
+    """
     engine = create_engine('sqlite:///'+database_filepath)
     df = pd.read_sql_table('df',engine)
     X = df['message']
@@ -30,6 +53,14 @@ def load_data(database_filepath):
 
 
 def tokenize(text):
+    """
+    Tokenize function
+    
+    Arguments:
+        text -> list of text messages (english)
+    Output:
+        clean_tokens -> tokenized text, clean for ML modeling
+    """
     url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
     detected_urls = re.findall(url_regex, text)
     for url in detected_urls:
@@ -46,6 +77,12 @@ def tokenize(text):
     return clean_tokens
 
 class StartingVerbExtractor(BaseEstimator, TransformerMixin):
+    """
+    Starting Verb Extractor class
+    
+    This class extract the starting verb of a sentence,
+    creating a new feature for the ML classifier
+    """
 
     def starting_verb(self, text):
         sentence_list = nltk.sent_tokenize(text)
@@ -64,6 +101,13 @@ class StartingVerbExtractor(BaseEstimator, TransformerMixin):
         return pd.DataFrame(X_tagged)
 
 def build_model():
+    """
+    Build Model function
+    
+    This function output is a Scikit ML Pipeline that process text messages
+    according to NLP best-practice and apply a classifier.
+
+    """
     model = Pipeline([
         ('features', FeatureUnion([
 
@@ -81,6 +125,28 @@ def build_model():
     return model
 
 def multioutput_fscore(y_true,y_pred,beta=1):
+    """
+    MultiOutput Fscore
+    
+    This is a performance metric of my own creation.
+    It is a sort of geometric mean of the fbeta_score, computed on each label.
+    
+    It is compatible with multi-label and multi-class problems.
+    It features some peculiarities (geometric mean, 100% removal...) to exclude
+    trivial solutions and deliberatly under-estimate a stangd fbeta_score average.
+    The aim is avoiding issues when dealing with multi-class/multi-label imbalanced cases.
+    
+    It can be used as scorer for GridSearchCV:
+        scorer = make_scorer(multioutput_fscore,beta=1)
+        
+    Arguments:
+        y_true -> labels
+        y_prod -> predictions
+        beta -> beta value of fscore metric
+    
+    Output:
+        f1score -> customized fscore
+    """
     score_list = []
     if isinstance(y_pred, pd.DataFrame) == True:
         y_pred = y_pred.values
@@ -95,6 +161,18 @@ def multioutput_fscore(y_true,y_pred,beta=1):
     return  f1score
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    """
+    Evaluate Model function
+    
+    This function applies ML pipeline to a test set and prints out
+    model performance (accuracy and f1score)
+    
+    Arguments:
+        model -> Scikit ML Pipeline
+        X_test -> test features
+        Y_test -> test labels
+        category_names -> label names (multi-output)
+    """
     Y_pred = model.predict(X_test)
     
     multi_f1 = multioutput_fscore(Y_test,Y_pred, beta = 1)
@@ -116,12 +194,32 @@ def evaluate_model(model, X_test, Y_test, category_names):
 
 
 def save_model(model, model_filepath):
+    """
+    Save Model function
+    
+    This function saves trained model as Pickle file, to be loaded later.
+    
+    Arguments:
+        model -> GridSearchCV or Scikit Pipelin object
+        model_filepath -> destination path to save .pkl file
+    
+    """
     filename = model_filepath
     pickle.dump(model, open(filename, 'wb'))
     pass
 
 
 def main():
+    """
+    Train Classifier Main function
+    
+    This function applies the Machine Learning Pipeline:
+        1) Extract data from SQLite db
+        2) Train ML model on training set
+        3) Estimate model performance on test set
+        4) Save trained model as Pickle
+    
+    """
     if len(sys.argv) == 3:
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
