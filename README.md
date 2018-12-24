@@ -42,10 +42,22 @@ git clone https://github.com/matteobonanomi/disaster-response.git
 
 3. Go to http://0.0.0.0:3001/
 
-## Screenshots
-
 ## Authors
 
 ## License
 
 ## Acknowledgements
+
+## Screenshots
+
+1. This is an exemple of a message you can type to test Machine Learning model performance**
+
+![Sample Input](screenshots/sample_input.png)
+
+2. After clicking **Classify Message**, you can see the categories which the message belongs to highlighted in green
+
+![Sample Output](screenshots/sample_output.png)
+
+3. The main page shows some graphs about training dataset, provided by Figure Eight
+
+![Main Page](screenshots/main_page.png)
