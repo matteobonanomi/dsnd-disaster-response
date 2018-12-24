@@ -14,7 +14,8 @@
 5. [Acknowledgement](#acknowledgement)
 6. [Screenshots](#screenshots)
 
-## Description[](#){name=descripton}
+<a name="descripton"></a>
+## Description
 
 This Project is part of Data Science Nanodegree Program by Udacity in collaboration with Figure Eight.
 The initial dataset contains pre-labelled tweet and messages from real-life disaster. 
@@ -26,22 +27,25 @@ The Project is divided in the following Sections:
 2. Machine Learning Pipeline to train a model able to classify text message in categories
 3. Web App to show model results in real time. 
 
-## Getting Started[](#){name=getting_started}
+<a name="getting_started"></a>
+## Getting Started
 
-### Dependencies[](#){name=dependencies}
+<a name="dependencies"></a>
+### Dependencies
 * Python 3.5+ (I used Python 3.7)
 * Machine Learning Libraries: NumPy, SciPy, Pandas, Sciki-Learn
 * Natural Language Process Libraries: NLTK
 * SQLlite Database Libraqries: SQLalchemy
 * Web App and Data Visualization: Flask, Plotly
 
-### Installing[](#){name=installing}
+<a name="installing"></a>
+### Installing
 Clone this GIT repository:
 ```
 git clone https://github.com/matteobonanomi/disaster-response.git
 ```
-
-### Executing Program:[](#){name=executing}
+<a name="executing"></a>
+### Executing Program:
 1. Run the following commands in the project's root directory to set up your database and model.
 
     - To run ETL pipeline that cleans data and stores in database
@@ -54,7 +58,8 @@ git clone https://github.com/matteobonanomi/disaster-response.git
 
 3. Go to http://0.0.0.0:3001/
 
-### Additional Material[](#){name=material}
+<a name="material"></a>
+### Additional Material
 
 In the **data** and **models** folder you can find two jupyter notebook that will help you understand how the model works step by step:
 1. **ETL Preparation Notebook**: learn everything about the implemented ETL pipeline
@@ -64,19 +69,23 @@ You can use **ML Pipeline Preparation Notebook** to re-train the model or tune i
 In this case, it is warmly recommended to use a Linux machine to run Grid Search, especially if you are going to try a large combination of parameters.
 Using a standard desktop/laptop (4 CPUs, RAM 8Gb or above) it may take several hours to complete. 
 
-## Authors[](#){name=authors}
+<a name="authors"></a>
+## Authors
 
 * [Matteo Bonanomi](https://github.com/matteobonanomi)
 
-## License[](#){name=license}
+<a name="license"></a>
+## License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Acknowledgements[](#){name=acknowledgement}
+<a name="acknowledgement"></a>
+## Acknowledgements
 
 * [Udacity](https://www.udacity.com/) for providing such a complete Data Science Nanodegree Program
 * [Figure Eight](https://www.figure-eight.com/) for providing messages dataset to train my model
 
-## Screenshots[](#){name=screenshots}
+<a name="screenshots"></a>
+## Screenshots
 
 1. This is an example of a message you can type to test Machine Learning model performance
 
