@@ -2,7 +2,7 @@
 
 ![Intro Pic](screenshots/intro.png)
 
-## Description
+## Description [](#){name=descripton}
 
 This Project is part of Data Science Nanodegree Program by Udacity in collaboration with Figure Eight.
 The initial dataset contains pre-labelled tweet and messages from real-life disaster. 
@@ -14,22 +14,22 @@ The Project is divided in the following Sections:
 2. Machine Learning Pipeline to train a model able to classify text message in categories
 3. Web App to show model results in real time. 
 
-## Getting Started
+## Getting Started [](#){name=getting_started}
 
-### Dependencies
+### Dependencies [](#){name=dependencies}
 * Python 3.5+ (I used Python 3.7)
 * Machine Learning Libraries: NumPy, SciPy, Pandas, Sciki-Learn
 * Natural Language Process Libraries: NLTK
 * SQLlite Database Libraqries: SQLalchemy
 * Web App and Data Visualization: Flask, Plotly
 
-### Installing
+### Installing [](#){name=installing}
 Clone this GIT repository:
 ```
 git clone https://github.com/matteobonanomi/disaster-response.git
 ```
 
-### Executing Program:
+### Executing Program: [](#){name=executing}
 1. Run the following commands in the project's root directory to set up your database and model.
 
     - To run ETL pipeline that cleans data and stores in database
@@ -42,7 +42,7 @@ git clone https://github.com/matteobonanomi/disaster-response.git
 
 3. Go to http://0.0.0.0:3001/
 
-### Additional Material
+### Additional Material [](#){name=material}
 
 In the **data** and **models** folder you can find two jupyter notebook that will help you understand how the model works step by step:
 1. **ETL Preparation Notebook**: learn everything about the implemented ETL pipeline
@@ -52,19 +52,19 @@ You can use **ML Pipeline Preparation Notebook** to re-train the model or tune i
 In this case, it is warmly recommended to use a Linux machine to run Grid Search, especially if you are going to try a large combination of parameters.
 Using a standard desktop/laptop (4 CPUs, RAM 8Gb or above) it may take several hours to complete. 
 
-## Authors
+## Authors [](#){name=authors}
 
 * [Matteo Bonanomi](https://github.com/matteobonanomi)
 
-## License
+## License [](#){name=license}
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Acknowledgements
+## Acknowledgements [](#){name=acknowledgement}
 
 * [Udacity](https://www.udacity.com/) for providing such a complete Data Science Nanodegree Program
 * [Figure Eight](https://www.figure-eight.com/) for providing messages dataset to train my model
 
-## Screenshots
+## Screenshots [](#){name=screenshots}
 
 1. This is an example of a message you can type to test Machine Learning model performance
 
